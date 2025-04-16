@@ -1,13 +1,22 @@
 # config.py
 import os
+import streamlit as st
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Get sensitive information from environment variables
-AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
-CONTAINER_NAME = os.getenv('CONTAINER_NAME')
+# First try to load from Streamlit secrets (for deployment)
+try:
+    AZURE_STORAGE_CONNECTION_STRING = st.secrets["azure"]["storage_connection_string"]
+    CONTAINER_NAME = st.secrets["azure"]["container_name"]
+    print("Loaded configuration from Streamlit secrets")
+except Exception as e:
+    # Fall back to .env file (for local development)
+    print(f"Couldn't load from Streamlit secrets: {e}. Trying .env file...")
+    load_dotenv()
+    AZURE_STORAGE_CONNECTION_STRING = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+    CONTAINER_NAME = os.getenv('CONTAINER_NAME')
+    
+    if not AZURE_STORAGE_CONNECTION_STRING:
+        print("Warning: Azure Storage connection string not found")
 
 # Define dataset file paths in Azure Storage
 timeframe_files = [
