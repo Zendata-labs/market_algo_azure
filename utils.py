@@ -72,6 +72,17 @@ def load_data_from_azure(file_name):
     Load data from Azure Blob Storage
     """
     try:
+        # Verify connection string is available
+        if not AZURE_STORAGE_CONNECTION_STRING:
+            raise ValueError("Azure Storage connection string is not available. Check your .env file or Streamlit secrets.")
+            
+        # Print the first few characters to debug (without revealing the full key)
+        safe_connection_str = AZURE_STORAGE_CONNECTION_STRING[:30] + '...' if AZURE_STORAGE_CONNECTION_STRING else 'None'
+        print(f"Connection string (truncated): {safe_connection_str}")
+        print(f"Container name: {CONTAINER_NAME}")
+        print(f"Loading file: {file_name}")
+        
+        # Create client and download data
         blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
         container_client = blob_service_client.get_container_client(CONTAINER_NAME)
         blob_client = container_client.get_blob_client(file_name)
