@@ -1,5 +1,7 @@
 # Gold Market Analysis Dashboard
 
+![Task Banner](https://via.placeholder.com/800x200.png?text=Today's+Task)
+
 A comprehensive Streamlit application for analyzing gold market data across multiple timeframes and profile types. This dashboard provides historical analysis of gold price movements, probabilities, returns, and volatility patterns to help identify trading opportunities.
 
 ## Features
